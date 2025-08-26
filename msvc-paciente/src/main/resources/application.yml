@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: msvc-paciente
+
+  r2dbc:
+    url: r2dbc:h2:mem:///patientdb;MODE=PostgreSQL
+    username: sa
+    password: sasa
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+
+logging:
+  level:
+    org.springframework.r2dbc.connection: DEBUG
