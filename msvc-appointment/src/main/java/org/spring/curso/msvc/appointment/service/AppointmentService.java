@@ -15,4 +15,5 @@ public interface AppointmentService {
 
     Mono<AppointmentDto> updateAppointment(Long id, UpdateAppintmentDto updateAppintmentDto);
 
+    Flux<AppointmentDto> getAppointmentsByPatientId(Long id);
 }

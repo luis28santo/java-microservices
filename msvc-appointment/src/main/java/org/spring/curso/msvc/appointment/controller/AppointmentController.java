@@ -38,4 +38,9 @@ public class AppointmentController {
         return this.appointmentService.updateAppointment(id, updateAppintmentDto);
     }
 
+    @GetMapping("/patient/{id}")
+    public Flux<AppointmentDto> getAppointmentsByPatientId(@PathVariable("id") Long id) {
+        return this.appointmentService.getAppointmentsByPatientId(id);
+    }
+
 }
