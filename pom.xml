@@ -19,6 +19,7 @@
 
     <modules>
         <module>msvc-paciente</module>
+        <module>msvc-appointment</module>
     </modules>
 
     <properties>

@@ -1,12 +1,12 @@
 server:
-  port: 8090
+  port: 9080
 
 spring:
   application:
-    name: msvc-paciente
+    name: msvc-appointment
 
   r2dbc:
-    url: r2dbc:h2:mem:///patientdb;MODE=PostgreSQL
+    url: r2dbc:h2:mem:///appointmentdb;MODE=PostgreSQL
     username: sa
     password: sasa
 
