@@ -13,7 +13,7 @@ public interface AppointmentMapper {
     @Mapping(source = "status", target = "statusDescription", qualifiedByName = "getStatusDescription")
     AppointmentDto appointmentToAppointmentDto(Appointment appointment);
 
-    @Mapping(source = "statusDescription", target = "status", qualifiedByName = "getStatusId")
+    @Mapping(source = "statusId", target = "status")
     Appointment appointmentDtoToAppointment(AppointmentDto appointmentDto);
 
     @Named(value = "getStatusDescription")
@@ -25,12 +25,12 @@ public interface AppointmentMapper {
         }
     }
 
-    @Named(value = "getStatusId")
-    default int getStatusId(String description) {
-        try {
-            return AppointmentStatusEnum.getStatusByDescription(description).getId();
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Error, el statusId es invalido");
-        }
-    }
+//    @Named(value = "getStatusId")
+//    default int getStatusId(String description) {
+//        try {
+//            return AppointmentStatusEnum.getStatusByDescription(description).getId();
+//        } catch (IllegalArgumentException e) {
+//            throw new IllegalArgumentException("Error, el statusId es invalido");
+//        }
+//    }
 }
