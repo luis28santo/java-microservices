@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.spring.curso.msvc.appointment.dto.AppointmentDto;
+import org.spring.curso.msvc.appointment.dto.CreateAppointmentRequest;
 import org.spring.curso.msvc.appointment.entity.Appointment;
 import org.spring.curso.msvc.appointment.enums.AppointmentStatusEnum;
 
@@ -15,6 +16,9 @@ public interface AppointmentMapper {
 
     @Mapping(source = "statusId", target = "status")
     Appointment appointmentDtoToAppointment(AppointmentDto appointmentDto);
+
+    @Mapping(source = "statusId", target = "status")
+    Appointment createAppointmentToAppointment(CreateAppointmentRequest appointmentRequest);
 
     @Named(value = "getStatusDescription")
     default String getStatusDescription(int id) {

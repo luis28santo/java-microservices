@@ -2,7 +2,9 @@ package org.spring.curso.msvc.appointment.service;
 
 import org.spring.curso.msvc.appointment.client.PatientClientService;
 import org.spring.curso.msvc.appointment.dto.AppointmentDto;
+import org.spring.curso.msvc.appointment.dto.CreateAppointmentRequest;
 import org.spring.curso.msvc.appointment.dto.UpdateAppintmentDto;
+import org.spring.curso.msvc.appointment.entity.Appointment;
 import org.spring.curso.msvc.appointment.mapper.AppointmentMapper;
 import org.spring.curso.msvc.appointment.repository.AppointmentRepository;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         return this.patientClientService.getPatientById(id)
                 .flatMapMany(patient -> this.repository.findByPatientId(id.longValue()))
                 .map(appointment -> this.mapper.appointmentToAppointmentDto(appointment));
+    }
+
+    @Override
+    public Mono<Void> createAppointmentAndPatient(CreateAppointmentRequest createAppointmentRequest) {
+        return this.patientClientService.savePatient(createAppointmentRequest.getPatientRequest())
+                .flatMap(patientResponse -> {
+                    Appointment appointment = this.mapper.createAppointmentToAppointment(createAppointmentRequest);
+                    appointment.setPatientId(patientResponse.getId().intValue());
+                    return this.repository.save(appointment);
+                })
+                .then();
     }
 
 }

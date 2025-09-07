@@ -1,5 +1,6 @@
 package org.spring.curso.msvc.appointment.controller;
 
+import org.spring.curso.msvc.appointment.dto.CreateAppointmentRequest;
 import org.spring.curso.msvc.appointment.dto.UpdateAppintmentDto;
 import org.spring.curso.msvc.appointment.service.AppointmentService;
 import org.spring.curso.msvc.appointment.dto.AppointmentDto;
@@ -41,6 +42,11 @@ public class AppointmentController {
     @GetMapping("/patient/{id}")
     public Flux<AppointmentDto> getAppointmentsByPatientId(@PathVariable("id") Long id) {
         return this.appointmentService.getAppointmentsByPatientId(id);
+    }
+
+    @PostMapping("/patient")
+    public Mono<Void> createAppointmentAndPatient(@RequestBody CreateAppointmentRequest createAppointmentRequest) {
+        return this.appointmentService.createAppointmentAndPatient(createAppointmentRequest);
     }
 
 }
