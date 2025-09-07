@@ -7,11 +7,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
-public class PatientClient {
+public class PatientClientService {
 
     private final WebClient patientWebClient;
 
-    public PatientClient(@Qualifier("patientWebClient") WebClient patientWebClient) {
+    public PatientClientService(@Qualifier("patientWebClient") WebClient patientWebClient) {
         this.patientWebClient = patientWebClient;
     }
 

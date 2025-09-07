@@ -1,5 +1,6 @@
 package org.spring.curso.msvc.paciente.service;
 
+import org.spring.curso.msvc.paciente.dto.CreatePatientRequest;
 import org.spring.curso.msvc.paciente.dto.PatientDto;
 import org.spring.curso.msvc.paciente.entity.Patient;
 import org.spring.curso.msvc.paciente.mapper.PatientMapper;
@@ -40,19 +41,16 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Mono<Void> savePatient(PatientDto patientDto) {
-        return Mono.just(this.mapper.patientDtoToPatient(patientDto))
-                .flatMap(patient ->
-                        this.patientRepository.existsByEmail(patient.getEmail())
-                                .flatMap(exists -> {
-                                    if (exists) {
-                                        return Mono.error(new RuntimeException("Error, el correo ya existe."));
-                                    }
+    public Mono<PatientDto> savePatient(CreatePatientRequest patientDto) {
+        return this.patientRepository.existsByEmail(patientDto.getEmail())
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(new RuntimeException("Error, el correo ya existe."));
+                    }
 
-                                    return this.patientRepository.save(patient);
-                                })
-                )
-                .then();
+                    return this.patientRepository.save(this.mapper.createPatientRequestToPatient(patientDto));
+                })
+                .map(patient -> this.mapper.patientToPatientDto(patient));
     }
 
     @Override

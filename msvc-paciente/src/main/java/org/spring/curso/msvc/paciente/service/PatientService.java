@@ -1,5 +1,6 @@
 package org.spring.curso.msvc.paciente.service;
 
+import org.spring.curso.msvc.paciente.dto.CreatePatientRequest;
 import org.spring.curso.msvc.paciente.dto.PatientDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,7 +11,7 @@ public interface PatientService {
 
     Mono<PatientDto> getPatientById(Long id);
 
-    Mono<Void> savePatient(PatientDto patientDto);
+    Mono<PatientDto> savePatient(CreatePatientRequest patientDto);
 
     Mono<Void> updatePatient(Long id, PatientDto patientDto);
 

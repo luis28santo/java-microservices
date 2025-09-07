@@ -1,5 +1,7 @@
 package org.spring.curso.msvc.paciente.controller;
 
+import jakarta.validation.Valid;
+import org.spring.curso.msvc.paciente.dto.CreatePatientRequest;
 import org.spring.curso.msvc.paciente.dto.PatientDto;
 import org.spring.curso.msvc.paciente.service.PatientService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<Mono<Void>> savePatient(@RequestBody PatientDto patientDto) {
+    public ResponseEntity<Mono<PatientDto>> savePatient(@Valid @RequestBody CreatePatientRequest patientDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.patientService.savePatient(patientDto));
     }
 

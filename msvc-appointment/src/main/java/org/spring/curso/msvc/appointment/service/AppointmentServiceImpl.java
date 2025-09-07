@@ -1,9 +1,8 @@
 package org.spring.curso.msvc.appointment.service;
 
-import org.spring.curso.msvc.appointment.client.PatientClient;
+import org.spring.curso.msvc.appointment.client.PatientClientService;
 import org.spring.curso.msvc.appointment.dto.AppointmentDto;
 import org.spring.curso.msvc.appointment.dto.UpdateAppintmentDto;
-import org.spring.curso.msvc.appointment.entity.Appointment;
 import org.spring.curso.msvc.appointment.mapper.AppointmentMapper;
 import org.spring.curso.msvc.appointment.repository.AppointmentRepository;
 import org.springframework.stereotype.Service;
@@ -18,19 +17,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository repository;
     private final AppointmentMapper mapper;
 
-    private final PatientClient patientClient;
+    private final PatientClientService patientClientService;
 
-    public AppointmentServiceImpl(AppointmentRepository repository, AppointmentMapper appointmentMapper, PatientClient patientClient) {
+    public AppointmentServiceImpl(AppointmentRepository repository, AppointmentMapper appointmentMapper, PatientClientService patientClientService) {
         this.repository = repository;
         this.mapper = appointmentMapper;
-        this.patientClient = patientClient;
+        this.patientClientService = patientClientService;
     }
 
     @Override
     public Mono<Void> createAppointment(AppointmentDto appointmentDto) {
         return Mono.just(this.mapper.appointmentDtoToAppointment(appointmentDto))
                 .flatMap(appointment ->
-                        this.patientClient.getPatientById(appointment.getPatientId().longValue())
+                        this.patientClientService.getPatientById(appointment.getPatientId().longValue())
                                 .flatMap(patient -> this.repository.save(appointment))
                 ).then();
     }
@@ -46,7 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return this.repository.findById(id)
                 .switchIfEmpty(Mono.error(new RuntimeException("Error, cita no encontrada")))
                 .flatMap(appointment ->
-                        this.patientClient.getPatientById(appointment.getPatientId().longValue())
+                        this.patientClientService.getPatientById(appointment.getPatientId().longValue())
                                 .flatMap(patient -> {
                                     AppointmentDto appointmentDto = this.mapper.appointmentToAppointmentDto(appointment);
                                     appointmentDto.setPatientResponse(patient);
@@ -73,7 +72,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Flux<AppointmentDto> getAppointmentsByPatientId(Long id) {
-        return this.patientClient.getPatientById(id)
+        return this.patientClientService.getPatientById(id)
                 .flatMapMany(patient -> this.repository.findByPatientId(id.longValue()))
                 .map(appointment -> this.mapper.appointmentToAppointmentDto(appointment));
     }

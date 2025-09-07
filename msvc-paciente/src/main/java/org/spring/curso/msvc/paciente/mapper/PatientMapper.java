@@ -3,6 +3,7 @@ package org.spring.curso.msvc.paciente.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.spring.curso.msvc.paciente.dto.CreatePatientRequest;
 import org.spring.curso.msvc.paciente.dto.PatientDto;
 import org.spring.curso.msvc.paciente.entity.Patient;
 
@@ -17,6 +18,9 @@ public interface PatientMapper {
 
     @Mapping(source = "statusDescription", target = "status", qualifiedByName = "getStatusId")
     Patient patientDtoToPatient(PatientDto patientDto);
+
+    @Mapping(source = "statusDescription", target = "status", qualifiedByName = "getStatusId")
+    Patient createPatientRequestToPatient(CreatePatientRequest patientRequest);
 
     @Named(value = "getStatusDescription")
     default String getStatusDescription(Integer status) {
